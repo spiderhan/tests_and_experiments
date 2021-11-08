@@ -1,4 +1,4 @@
-<html>
+<html meta-charset-utf-8 lang="en">
   <head>
     <style type="text/css">
       :root {
@@ -71,18 +71,38 @@
           position: relative;
           display: flex;
           flex-grow: 1;
-          flex-basis: 50em;
+          height: 500px;
           border: 1px solid rgba(0, 0, 0, 0.5);
         }
+
+        /* Actions */
+        
     </style>
   </head>
   <body>
     <div class="mainContainer">
+      <button class="button" type="button">start</button>
+
+
     <div class="clock clockPosition">
       <div class="face facePosition"></div>
       <div class="hand hand2 handDefault"></div>
       <div class="hand hand1 handDefault"></div>
     </div>
+
     </div>
+
+    <script language="text/javascript">
+      clock = {};
+      clock.timeInDegrees = () => {
+      let time = new Date();
+      let hours = time.getHours();
+      let minutes = time.getMinutes();
+      let seconds = time.getSeconds();
+      let timeInDegrees = (hours * 30) + (minutes * 0.5) + (seconds * 0.00833333);  
+
+      }
+
+    </script>
   </body>
 </html>

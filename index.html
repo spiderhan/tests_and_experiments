@@ -1,5 +1,10 @@
-<html meta-charset-utf-8 lang="en">
-  <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clock</title>
+<head>
     <style type="text/css">
       :root {
         --default_paper_color: #ffffff;
@@ -8,14 +13,17 @@
 
         --default_hand_width: var(--default_pen_width);
         --default_size: calc(var(--default_pen_width) * 100);
+
+        --default_hand_start_deg: 0deg;
+        --default_hand_end_deg: 360deg;
       }
 
           @keyframes rotate-360 {
             from {
-              transform: rotate(0deg);
+              transform: rotate(var(--default_hand_start_deg));
             }
             to {
-              transform: rotate(360deg);
+              transform: rotate(var(--default_hand_end_deg));
             }
           }
 
@@ -31,12 +39,16 @@
             border: 1px solid rgba(0, 0, 0, 0.2);
           }
 
-          .handDefault {
+          .hand_animation {
+            animation-name: rotate-360;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+          }
+
+          .hand_default {
             top: 0;
             position: absolute;
-            animation: rotate-360 1s linear infinite;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
             transform-origin: 0% 0%;
           }
 
@@ -48,7 +60,7 @@
             animation-duration: 60s;
           }
 
-        .hand1 {
+        .hand_1 {
           animation-duration: 10s;
         }
 
@@ -67,7 +79,7 @@
 
         /* container */
 
-        .mainContainer {
+        .main_container {
           position: relative;
           display: flex;
           flex-grow: 1;
@@ -80,28 +92,103 @@
     </style>
   </head>
   <body>
-    <div class="mainContainer">
-      <button class="button" type="button">start</button>
+    <div class="main_container">
+      <button class="button button_start" type="button">start</button>
+      <button class="button button_stop" type="button">stop</button>
+      <button class="button button_reset">reset</button>
 
-
-    <div class="clock clockPosition">
-      <div class="face facePosition"></div>
-      <div class="hand hand2 handDefault"></div>
-      <div class="hand hand1 handDefault"></div>
-    </div>
 
     </div>
 
-    <script language="text/javascript">
+    <script>
+
       clock = {};
+
+      clock.elements = {};
+
+      clock.elements["clockHtml"] = `
+        <div class="clock clockPosition">
+          <div class="face facePosition"></div>
+          <div class="hand hand_2 hand_default hand_animation"></div>
+          <div class="hand hand_1 hand_default hand_animation"></div>
+        </div>`;
+      
+      clock.createElements =  () => {
+
+
+        const elements = { 
+        button_start: document.querySelector('.button_start'),
+        button_stop: document.querySelector('.button_stop'),
+        button_reset: document.querySelector('.button_reset'),
+        clock: document.querySelector('.clock'),
+        face: document.querySelector('.face'),
+        hand_1: document.querySelector('.hand_1'),
+        hand_2: document.querySelector('.hand_2')
+        };
+
+      clock.elements = {...clock.elements,...elements}; 
+    }
+
+      clock.init = () => {
+      clock.attachHtml(clock.elements.clockHtml, document.querySelector('.main_container'));
+      clock.createElements();
+      clock.bindEvents();
+      }
+
+      clock.attachHtml = (html, element) => element.insertAdjacentHTML('beforeend', html);
+     
+      clock.removeHtml = (element) => element.remove();
+
+      clock.bindEvents = () => {
+        clock.elements.button_start.addEventListener('click', clock.start);
+        clock.elements.button_stop.addEventListener('click', clock.stop);
+        clock.elements.button_reset.addEventListener('click', clock.reset);
+      }
+
       clock.timeInDegrees = () => {
       let time = new Date();
       let hours = time.getHours();
       let minutes = time.getMinutes();
       let seconds = time.getSeconds();
       let timeInDegrees = (hours * 30) + (minutes * 0.5) + (seconds * 0.00833333);  
-
       }
+   
+      clock.positionHand = (hand, degrees) => {
+        console.log(hand.style.transform,degrees);
+        hand.style.transform = `rotate(${degrees}deg)`;
+        hand.style.webkitTransform = `rotate(${degrees}deg)`;
+      }
+
+      clock.reset = () => {
+        clock.stop();
+        clock.removeHtml(clock.elements.clock);
+        document.querySelector('.main_container').appendChild(clock.elements.clock);
+        clock.positionHand(clock.elements.hand_1, 0);
+        clock.positionHand(clock.elements.hand_2, 0);
+      }
+
+      clock.start = () => {
+        clock.elements.hand_1.style.animationPlayState = 'running';
+        clock.elements.hand_2.style.animationPlayState = 'running';
+      }
+
+      clock.stop = () => {
+        clock.elements.hand_1.style.animationPlayState = 'paused';
+        clock.elements.hand_2.style.animationPlayState = 'paused';
+      }
+
+      //run a function every second
+      // this function does nothing yet 
+      setInterval(() => {
+        clock.positionHand(clock.elements.hand_1, clock.timeInDegrees());
+        clock.positionHand(clock.elements.hand_2, clock.timeInDegrees());
+      }, 1000);
+
+      
+
+
+      clock.init();
+
 
     </script>
   </body>

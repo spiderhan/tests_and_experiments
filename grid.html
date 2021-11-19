@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grids and things</title>
+    <style>
+        :root {
+            --base-grid: 8px;
+            --base-gap: calc(var(--base-grid) * 2);
+            --base-padding: var(--base-gap);
+            --base-font-size: calc(var(--base-grid) * 2);
+        }
+        /* reset  */
+
+       h1, h2, h3, h4, h5, h6 {
+        margin: 0; 
+        padding: 0;   
+        } 
+
+        /* end reset */
+
+        body {
+            font-family: sans-serif;
+            font-size: var(--base-font-size);
+        }
+
+        h1 {
+            font-size: calc(var(--base-font-size) * 2);
+            margin: calc( var(--base-gap) * 2);
+        } 
+
+        h2 {
+            font-size: calc(var(--base-font-size) * 1.5);
+        }
+
+        h3 {
+            font-size: calc(var(--base-font-size) * 1.25);
+        }
+
+        .grid-container {
+            display: grid;
+            display: -ms-grid;
+            -ms-grid-columns: auto auto auto;
+            grid-gap: var(--base-gap);
+            padding: var(--base-padding);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            
+
+        }
+        .grid-item {
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            font-size: var(--base-font-size); ;
+            text-align: center;
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-gap: var(--base-gap);
+
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        
+        </style>
+</head>
+<body>
+    
+    <h1>Grid</h1>
+
+    <div class="grid-container">
+        <div class="grid-item">grid</div>
+        <div class="grid-item">grid</div>
+        <div class="grid-item">grid</div>
+        <div class="grid-item">grid</div>
+        <div class="grid-item">grid</div>
+        <div class="grid-item">grid</div>
+        <div class="grid-item">
+            <h3>title</h3>
+            <img src="https://picsum.photos/500/600" alt=""/>
+            <div class="description">lorem ipsum dolor lorem ipsum dolorlorem ipsum dolorlorem ipsum dolorlorem ipsum dolorlorem ipsum dolor     </div>
+            <div class="price_box">
+                <div class="price">£2.333</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

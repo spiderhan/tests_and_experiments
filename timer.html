@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+  </head>
+  <body>
+    // add timer display
+    <div id="timer">
+      <h1>Timer</h1>
+      <p>Time: <span id="time">00:00:00</span></p>
+      <button type="button" id="start">Start</button>
+      <button type="button" id="stop">Stop</button>
+      <button type="button" id="reset">Reset</button>
+    </div>
+
+    <script language="javascript">
+      const timerEngine = {};
+
+      timerEngine.init = () => {
+        timerEngine.elements = timerEngine.elements();
+        timerEngine.bindEvents();
+      };
+
+      timerEngine.bindEvents = () => {
+        timerEngine.elements.start.addEventListener(
+          "click",
+          timerEngine.startTimer
+        );
+        timerEngine.elements.stop.addEventListener(
+          "click",
+          timerEngine.stopTimer
+        );
+        timerEngine.elements.reset.addEventListener(
+          "click",
+          timerEngine.resetTimer
+        );
+      };
+
+      timerEngine.startTimer = () => {
+        //start the timer  with debounce
+        console.log("start");
+        timerEngine.timer = setInterval(timerEngine.updateTime, 1000);
+      };
+
+      timerEngine.stopTimer = () => {
+        //stop the timer
+        clearInterval(timerEngine.timer);
+      };
+
+      timerEngine.elements = () => {
+        //get the elements
+
+        elements = {
+          start: document.getElementById("start"),
+          stop: document.getElementById("stop"),
+          reset: document.getElementById("reset"),
+          time: document.getElementById("time"),
+        };
+
+        return elements;
+      };
+
+      timerEngine.getTime = () => {
+        //get the time
+        let time = new Date();
+        let hours = time.getHours();
+        let minutes = time.getMinutes();
+        let seconds = time.getSeconds();
+
+        if (hours < 10) {
+          hours = "0" + hours;
+        }
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds;
+        }
+
+        return `${hours}:${minutes}:${seconds}`;
+      };
+
+      timerEngine.updateTime = () => {
+        let time = timerEngine.getTime();
+        timerEngine.elements.time.innerHTML = time;
+      };
+
+      timerEngine.init();
+    </script>
+  </body>
+</html>
